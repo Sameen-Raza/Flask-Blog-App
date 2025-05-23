@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} - My Blog{% endblock %}
+
+{% block content %}
+  <h2>{{ post.title }}</h2>
+  <p class="text-muted">Posted on {{ post.date_posted.strftime('%Y-%m-%d %H:%M') }} by {{ post.author.username }}</p>
+  <p>{{ post.content }}</p>
+
+  {% if current_user.is_authenticated and post.author == current_user %}
+    <div class="d-flex gap-2 mt-4">
+      <a href="{{ url_for('edit', id=post.id) }}" class="btn btn-warning">Edit</a>
+      <form method="POST" action="{{ url_for('delete', id=post.id) }}">
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </form>
+    </div>
+  {% endif %}
+
+  <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Home</a>
+{% endblock %}
